@@ -21,7 +21,7 @@ const Layout: React.FC<Props> = ({ title, children }) => (
           {'. The source code is licensed '}
           <a href="http://opensource.org/licenses/mit-license.php">MIT</a>
           {'. Find it on '}
-          <a href="https://github.com/fnberta">Github</a>
+          <a href="https://github.com/fnberta/np-dough">Github</a>
           {'.'}
         </p>
       </div>
