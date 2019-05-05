@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+$primary: #f44336;
+
+@import '~bulma/bulma';
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+#___gatsby,
+#___gatsby > * {
+  height: 100%;
+  width: 100%;
+}
+
+.vertically-spaced {
+  & > * {
+    margin-bottom: 3rem !important
+  }
+
+  & > *:last-child {
+    margin-bottom: 0 !important
+  }
+}
