@@ -3,62 +3,82 @@ import produce from 'immer';
 import { DateTime } from 'luxon';
 import React, { useMemo, useReducer } from 'react';
 import DoughForm, { MAX_HOURS } from '../components/DoughForm';
-import DoughRecipe, { YeastModel } from '../components/DoughRecipe';
+import DoughRecipe from '../components/DoughRecipe';
 import Layout from '../components/Layout';
-import { IndexPageQuery, YeastModelCsvTemperature } from '../generatedGraphQL';
+import { IndexPageQuery } from '../generatedGraphQL';
+import { DoughInput, TemperatureUnit, YeastModel, initialDoughInput } from '../recipe';
 
 export interface Props {
   data: IndexPageQuery;
 }
 
-export enum TemperatureUnit {
-  CELSIUS = 'CELSIUS',
-  FAHRENHEIT = 'FAHRENHEIT',
-}
-
-export type DoughInputs = typeof initialDoughInput;
-
-export interface DoughAction {
-  type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload?: any;
-}
-
-const initialDoughInput = {
-  count: 4,
-  weight: 270,
-  hydration: 65,
-  saltPercentage: 3.2,
-  temperature: {
-    unit: TemperatureUnit.CELSIUS,
-    value: 18,
-  },
-  hours: 24,
-};
-
-function getTemperature(data: YeastModelCsvTemperature, tempUnit: TemperatureUnit): number {
-  switch (tempUnit) {
-    case TemperatureUnit.CELSIUS:
-      return data['celsius'];
-    case TemperatureUnit.FAHRENHEIT:
-      return data['fahrenheit'];
-  }
-}
+export type DoughAction =
+  | {
+      type: 'COUNT';
+      payload: {
+        count: number;
+      };
+    }
+  | {
+      type: 'WEIGHT';
+      payload: {
+        weight: number;
+      };
+    }
+  | {
+      type: 'HYDRATION';
+      payload: {
+        hydration: number;
+      };
+    }
+  | {
+      type: 'SALT_PERCENTAGE';
+      payload: {
+        percentage: number;
+      };
+    }
+  | {
+      type: 'TEMPERATURE_UNIT';
+      payload: {
+        unit: TemperatureUnit;
+      };
+    }
+  | {
+      type: 'TEMPERATURE_VALUE';
+      payload: {
+        temperature: number;
+      };
+    }
+  | {
+      type: 'DATE_TIME';
+      payload: {
+        isoDate?: string;
+      };
+    }
+  | {
+      type: 'HOURS';
+      payload: {
+        hours: number;
+      };
+    }
+  | {
+      type: 'RESET';
+    };
 
 function prepareYeastModels(
   { allYeastModelCsv }: IndexPageQuery,
   temperatureUnit: TemperatureUnit,
 ): Map<number, YeastModel[]> {
-  const initial = new Map();
+  const initial = new Map<number, YeastModel[]>();
   if (!allYeastModelCsv) {
     return initial;
   }
 
-  return allYeastModelCsv.edges
-    .filter(edge => edge.node.hours !== -1)
+  const models = allYeastModelCsv.nodes
+    .filter(node => node.hours !== -1)
     .reduce((acc, curr) => {
-      const { hours, yeast } = curr.node;
-      const temperature = getTemperature(curr.node.temperature, temperatureUnit);
+      const { hours, yeast } = curr;
+      const temperature = curr.temperature[temperatureUnit];
       const yeastModel: YeastModel = {
         temperature,
         hours,
@@ -74,46 +94,53 @@ function prepareYeastModels(
 
       return acc;
     }, initial);
+  models.forEach(entry => {
+    entry.sort((a, b) => a.hours - b.hours);
+  });
+
+  return models;
 }
 
 function convertTemperature(newUnit: TemperatureUnit, value: number): number {
   switch (newUnit) {
-    case TemperatureUnit.CELSIUS:
+    case 'celsius':
       return Math.round((value - 32) / 1.8);
-    case TemperatureUnit.FAHRENHEIT:
+    case 'fahrenheit':
       return Math.round(value * 1.8 + 32);
   }
 }
 
-function reducer(state: DoughInputs, action: DoughAction): DoughInputs {
+function reducer(state: DoughInput, action: DoughAction): DoughInput {
   return produce(state, draft => {
     switch (action.type) {
-      case 'setCount': {
-        draft.count = action.payload;
+      case 'COUNT': {
+        draft.count = action.payload.count;
         return;
       }
-      case 'setWeight': {
-        draft.weight = action.payload;
+      case 'WEIGHT': {
+        draft.weight = action.payload.weight;
         return;
       }
-      case 'setHydration': {
-        draft.hydration = action.payload;
+      case 'HYDRATION': {
+        draft.hydration = action.payload.hydration;
         return;
       }
-      case 'setSaltPercentage': {
-        draft.saltPercentage = action.payload;
+      case 'SALT_PERCENTAGE': {
+        draft.saltPercentage = action.payload.percentage;
         return;
       }
-      case 'setTemperatureUnit':
-        draft.temperature.unit = action.payload;
-        draft.temperature.value = convertTemperature(action.payload, state.temperature.value);
-        return;
-      case 'setTemperatureValue': {
-        draft.temperature.value = action.payload;
+      case 'TEMPERATURE_UNIT': {
+        const { unit } = action.payload;
+        draft.temperature.unit = unit;
+        draft.temperature.value = convertTemperature(unit, state.temperature.value);
         return;
       }
-      case 'setDateTime': {
-        const isoDate = action.payload;
+      case 'TEMPERATURE_VALUE': {
+        draft.temperature.value = action.payload.temperature;
+        return;
+      }
+      case 'DATE_TIME': {
+        const { isoDate } = action.payload;
         if (isoDate) {
           const pizzaTime = DateTime.fromISO(isoDate);
           const now = DateTime.local();
@@ -127,11 +154,11 @@ function reducer(state: DoughInputs, action: DoughAction): DoughInputs {
 
         return;
       }
-      case 'setHours': {
-        draft.hours = action.payload;
+      case 'HOURS': {
+        draft.hours = action.payload.hours;
         return;
       }
-      case 'reset':
+      case 'RESET':
         return initialDoughInput;
       default:
         return;
@@ -163,7 +190,7 @@ const IndexPage: React.FC<Props> = ({ data }) => {
 export default IndexPage;
 
 export const query = graphql`
-  fragment yeastModelFields on YeastModelCsv {
+  fragment yeastModel on YeastModelCsv {
     temperature {
       celsius
       fahrenheit
@@ -178,10 +205,8 @@ export const query = graphql`
 
   query IndexPage {
     allYeastModelCsv {
-      edges {
-        node {
-          ...yeastModelFields
-        }
+      nodes {
+        ...yeastModel
       }
     }
   }

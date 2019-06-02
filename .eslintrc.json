@@ -16,6 +16,7 @@
     "@typescript-eslint/no-use-before-define": {
       "typedefs": false
     },
+    "@typescript-eslint/no-non-null-assertion": "off",
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"

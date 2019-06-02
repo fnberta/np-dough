@@ -1,18 +1,9 @@
 import React from 'react';
-import { DoughInputs } from '../pages';
-
-export interface YeastModel {
-  temperature: number;
-  yeast: {
-    idy: number;
-    cy: number;
-    ady: number;
-  };
-  hours: number;
-}
+import { DoughInput, getDoughRecipe, YeastModel } from '../recipe';
 
 export interface Props {
-  doughInputs: DoughInputs;
+  doughInputs: DoughInput;
+  // yeast models keyed by temperature
   yeastModels: Map<number, YeastModel[]>;
 }
 
@@ -21,20 +12,7 @@ function formatNumber(value: number, digits: number = 0): string {
 }
 
 const DoughRecipe: React.FC<Props> = ({ doughInputs, yeastModels }) => {
-  const { count, weight, hydration, saltPercentage, temperature, hours } = doughInputs;
-
-  const totalWeight = count * weight;
-  const flour = totalWeight / (1 + hydration / 100 + saltPercentage / 100);
-  const water = flour * (hydration / 100);
-  const salt = flour * (saltPercentage / 100);
-
-  const [, modelsForTemperature] = Array.from(yeastModels.entries()).reduce((acc, curr) =>
-    Math.abs(temperature.value - curr[0]) < Math.abs(temperature.value - acc[0]) ? curr : acc,
-  );
-  const yeastModel = modelsForTemperature.reduce((acc, curr) =>
-    Math.abs(hours - curr.hours) < Math.abs(hours - acc.hours) ? curr : acc,
-  );
-
+  const { flour, water, salt, yeast } = getDoughRecipe(yeastModels, doughInputs);
   return (
     <div className="card">
       <div className="card-content">
@@ -62,11 +40,11 @@ const DoughRecipe: React.FC<Props> = ({ doughInputs, yeastModels }) => {
             <div>
               <p className="heading">Yeast</p>
               <p>
-                <span className="title is-5">{`${formatNumber(flour * (yeastModel.yeast.cy / 100), 3)}g`}</span>
+                <span className="title is-5">{`${formatNumber(yeast.cy, 3)}g`}</span>
                 {' fresh / '}
-                <span className="title is-5">{`${formatNumber(flour * (yeastModel.yeast.idy / 100), 3)}g`}</span>
+                <span className="title is-5">{`${formatNumber(yeast.idy, 3)}g`}</span>
                 {' instant dry / '}
-                <span className="title is-5">{`${formatNumber(flour * (yeastModel.yeast.ady / 100), 3)}g`}</span>
+                <span className="title is-5">{`${formatNumber(yeast.ady, 3)}g`}</span>
                 {' active dry'}
               </p>
             </div>

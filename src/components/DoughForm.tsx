@@ -1,10 +1,11 @@
 import { DateTime, Duration } from 'luxon';
 import React from 'react';
-import { DoughAction, DoughInputs, TemperatureUnit } from '../pages';
+import { DoughAction } from '../pages';
+import { DoughInput, TemperatureUnit } from '../recipe';
 import { FormField, HorizontalField } from './bulma/Forms';
 
 export interface Props {
-  doughInputs: DoughInputs;
+  doughInputs: DoughInput;
   dispatch: (action: DoughAction) => void;
 }
 
@@ -19,9 +20,9 @@ function getDateTimeValue(hours: number): string {
 
 function getMaxTemp(unit: TemperatureUnit): number {
   switch (unit) {
-    case TemperatureUnit.CELSIUS:
+    case 'celsius':
       return 35;
-    case TemperatureUnit.FAHRENHEIT:
+    case 'fahrenheit':
       return 95;
   }
 }
@@ -40,7 +41,7 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
               name="reset"
               onClick={e => {
                 e.preventDefault();
-                dispatch({ type: 'reset' });
+                dispatch({ type: 'RESET' });
               }}
             >
               Reset to default
@@ -59,7 +60,14 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
               aria-label="Count"
               min={1}
               value={count}
-              onChange={e => dispatch({ type: 'setCount', payload: +e.currentTarget.value })}
+              onChange={e => {
+                dispatch({
+                  type: 'COUNT',
+                  payload: {
+                    count: +e.currentTarget.value,
+                  },
+                });
+              }}
             />
           }
         />
@@ -75,7 +83,14 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
               aria-label="Weight"
               min={1}
               value={weight}
-              onChange={e => dispatch({ type: 'setWeight', payload: +e.currentTarget.value })}
+              onChange={e => {
+                dispatch({
+                  type: 'WEIGHT',
+                  payload: {
+                    weight: +e.currentTarget.value,
+                  },
+                });
+              }}
             />
           }
         />
@@ -92,7 +107,14 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
               min={1}
               max={100}
               value={hydration}
-              onChange={e => dispatch({ type: 'setHydration', payload: +e.currentTarget.value })}
+              onChange={e => {
+                dispatch({
+                  type: 'HYDRATION',
+                  payload: {
+                    hydration: +e.currentTarget.value,
+                  },
+                });
+              }}
             />
           }
         />
@@ -110,7 +132,14 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
               min={1}
               max={100}
               value={saltPercentage}
-              onChange={e => dispatch({ type: 'setSaltPercentage', payload: +e.currentTarget.value })}
+              onChange={e => {
+                dispatch({
+                  type: 'SALT_PERCENTAGE',
+                  payload: {
+                    percentage: +e.currentTarget.value,
+                  },
+                });
+              }}
             />
           }
         />
@@ -123,9 +152,16 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
                 <input
                   type="radio"
                   name="temp-unit"
-                  checked={temperature.unit === TemperatureUnit.CELSIUS}
-                  value={TemperatureUnit.CELSIUS}
-                  onChange={e => dispatch({ type: 'setTemperatureUnit', payload: e.currentTarget.value })}
+                  checked={temperature.unit === 'celsius'}
+                  value="celsius"
+                  onChange={e => {
+                    dispatch({
+                      type: 'TEMPERATURE_UNIT',
+                      payload: {
+                        unit: e.currentTarget.value as TemperatureUnit,
+                      },
+                    });
+                  }}
                 />
                 {' Celsius'}
               </label>
@@ -133,9 +169,16 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
                 <input
                   type="radio"
                   name="temp-unit"
-                  checked={temperature.unit === TemperatureUnit.FAHRENHEIT}
-                  value={TemperatureUnit.FAHRENHEIT}
-                  onChange={e => dispatch({ type: 'setTemperatureUnit', payload: e.currentTarget.value })}
+                  checked={temperature.unit === 'fahrenheit'}
+                  value="fahrenheit"
+                  onChange={e => {
+                    dispatch({
+                      type: 'TEMPERATURE_UNIT',
+                      payload: {
+                        unit: e.currentTarget.value as TemperatureUnit,
+                      },
+                    });
+                  }}
                 />
                 {' Fahrenheit'}
               </label>
@@ -155,7 +198,14 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
               min={1}
               max={getMaxTemp(temperature.unit)}
               value={temperature.value}
-              onChange={e => dispatch({ type: 'setTemperatureValue', payload: +e.currentTarget.value })}
+              onChange={e => {
+                dispatch({
+                  type: 'TEMPERATURE_VALUE',
+                  payload: {
+                    temperature: +e.currentTarget.value,
+                  },
+                });
+              }}
             />
           }
         />
@@ -171,7 +221,14 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
               aria-label="Pizza Time"
               min="2017-06-01T08:30"
               value={getDateTimeValue(hours)}
-              onChange={e => dispatch({ type: 'setDateTime', payload: e.currentTarget.value })}
+              onChange={e => {
+                dispatch({
+                  type: 'DATE_TIME',
+                  payload: {
+                    isoDate: e.currentTarget.value,
+                  },
+                });
+              }}
             />
           }
         />
@@ -188,7 +245,14 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
               min={1}
               max={MAX_HOURS}
               value={hours}
-              onChange={e => dispatch({ type: 'setHours', payload: +e.currentTarget.value })}
+              onChange={e => {
+                dispatch({
+                  type: 'HOURS',
+                  payload: {
+                    hours: +e.currentTarget.value,
+                  },
+                });
+              }}
             />
           }
         />

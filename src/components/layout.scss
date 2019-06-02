@@ -19,10 +19,10 @@ body {
 
 .vertically-spaced {
   & > * {
-    margin-bottom: 3rem !important
+    margin-bottom: 3rem !important;
   }
 
   & > *:last-child {
-    margin-bottom: 0 !important
+    margin-bottom: 0 !important;
   }
 }
