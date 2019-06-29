@@ -703,99 +703,99 @@ export type ImageSharpFixedArgs = {
   width?: Maybe<Scalars['Int']>;
   height?: Maybe<Scalars['Int']>;
   base64Width?: Maybe<Scalars['Int']>;
-  jpegProgressive: Scalars['Boolean'];
-  pngCompressionSpeed: Scalars['Int'];
-  grayscale: Scalars['Boolean'];
+  jpegProgressive?: Maybe<Scalars['Boolean']>;
+  pngCompressionSpeed?: Maybe<Scalars['Int']>;
+  grayscale?: Maybe<Scalars['Boolean']>;
   duotone?: Maybe<DuotoneGradient>;
   traceSVG?: Maybe<Potrace>;
   quality?: Maybe<Scalars['Int']>;
-  toFormat: ImageFormat;
-  toFormatBase64: ImageFormat;
-  cropFocus: ImageCropFocus;
-  fit: ImageFit;
-  background: Scalars['String'];
-  rotate: Scalars['Int'];
-  trim: Scalars['Float'];
+  toFormat?: Maybe<ImageFormat>;
+  toFormatBase64?: Maybe<ImageFormat>;
+  cropFocus?: Maybe<ImageCropFocus>;
+  fit?: Maybe<ImageFit>;
+  background?: Maybe<Scalars['String']>;
+  rotate?: Maybe<Scalars['Int']>;
+  trim?: Maybe<Scalars['Float']>;
 };
 
 export type ImageSharpResolutionsArgs = {
   width?: Maybe<Scalars['Int']>;
   height?: Maybe<Scalars['Int']>;
   base64Width?: Maybe<Scalars['Int']>;
-  jpegProgressive: Scalars['Boolean'];
-  pngCompressionSpeed: Scalars['Int'];
-  grayscale: Scalars['Boolean'];
+  jpegProgressive?: Maybe<Scalars['Boolean']>;
+  pngCompressionSpeed?: Maybe<Scalars['Int']>;
+  grayscale?: Maybe<Scalars['Boolean']>;
   duotone?: Maybe<DuotoneGradient>;
   traceSVG?: Maybe<Potrace>;
   quality?: Maybe<Scalars['Int']>;
-  toFormat: ImageFormat;
-  toFormatBase64: ImageFormat;
-  cropFocus: ImageCropFocus;
-  fit: ImageFit;
-  background: Scalars['String'];
-  rotate: Scalars['Int'];
-  trim: Scalars['Float'];
+  toFormat?: Maybe<ImageFormat>;
+  toFormatBase64?: Maybe<ImageFormat>;
+  cropFocus?: Maybe<ImageCropFocus>;
+  fit?: Maybe<ImageFit>;
+  background?: Maybe<Scalars['String']>;
+  rotate?: Maybe<Scalars['Int']>;
+  trim?: Maybe<Scalars['Float']>;
 };
 
 export type ImageSharpFluidArgs = {
   maxWidth?: Maybe<Scalars['Int']>;
   maxHeight?: Maybe<Scalars['Int']>;
   base64Width?: Maybe<Scalars['Int']>;
-  grayscale: Scalars['Boolean'];
-  jpegProgressive: Scalars['Boolean'];
-  pngCompressionSpeed: Scalars['Int'];
+  grayscale?: Maybe<Scalars['Boolean']>;
+  jpegProgressive?: Maybe<Scalars['Boolean']>;
+  pngCompressionSpeed?: Maybe<Scalars['Int']>;
   duotone?: Maybe<DuotoneGradient>;
   traceSVG?: Maybe<Potrace>;
   quality?: Maybe<Scalars['Int']>;
-  toFormat: ImageFormat;
-  toFormatBase64: ImageFormat;
-  cropFocus: ImageCropFocus;
-  fit: ImageFit;
-  background: Scalars['String'];
-  rotate: Scalars['Int'];
-  trim: Scalars['Float'];
-  sizes: Scalars['String'];
-  srcSetBreakpoints: Array<Maybe<Scalars['Int']>>;
+  toFormat?: Maybe<ImageFormat>;
+  toFormatBase64?: Maybe<ImageFormat>;
+  cropFocus?: Maybe<ImageCropFocus>;
+  fit?: Maybe<ImageFit>;
+  background?: Maybe<Scalars['String']>;
+  rotate?: Maybe<Scalars['Int']>;
+  trim?: Maybe<Scalars['Float']>;
+  sizes?: Maybe<Scalars['String']>;
+  srcSetBreakpoints?: Maybe<Array<Maybe<Scalars['Int']>>>;
 };
 
 export type ImageSharpSizesArgs = {
   maxWidth?: Maybe<Scalars['Int']>;
   maxHeight?: Maybe<Scalars['Int']>;
   base64Width?: Maybe<Scalars['Int']>;
-  grayscale: Scalars['Boolean'];
-  jpegProgressive: Scalars['Boolean'];
-  pngCompressionSpeed: Scalars['Int'];
+  grayscale?: Maybe<Scalars['Boolean']>;
+  jpegProgressive?: Maybe<Scalars['Boolean']>;
+  pngCompressionSpeed?: Maybe<Scalars['Int']>;
   duotone?: Maybe<DuotoneGradient>;
   traceSVG?: Maybe<Potrace>;
   quality?: Maybe<Scalars['Int']>;
-  toFormat: ImageFormat;
-  toFormatBase64: ImageFormat;
-  cropFocus: ImageCropFocus;
-  fit: ImageFit;
-  background: Scalars['String'];
-  rotate: Scalars['Int'];
-  trim: Scalars['Float'];
-  sizes: Scalars['String'];
-  srcSetBreakpoints: Array<Maybe<Scalars['Int']>>;
+  toFormat?: Maybe<ImageFormat>;
+  toFormatBase64?: Maybe<ImageFormat>;
+  cropFocus?: Maybe<ImageCropFocus>;
+  fit?: Maybe<ImageFit>;
+  background?: Maybe<Scalars['String']>;
+  rotate?: Maybe<Scalars['Int']>;
+  trim?: Maybe<Scalars['Float']>;
+  sizes?: Maybe<Scalars['String']>;
+  srcSetBreakpoints?: Maybe<Array<Maybe<Scalars['Int']>>>;
 };
 
 export type ImageSharpResizeArgs = {
   width?: Maybe<Scalars['Int']>;
   height?: Maybe<Scalars['Int']>;
   quality?: Maybe<Scalars['Int']>;
-  jpegProgressive: Scalars['Boolean'];
-  pngCompressionLevel: Scalars['Int'];
-  pngCompressionSpeed: Scalars['Int'];
-  grayscale: Scalars['Boolean'];
+  jpegProgressive?: Maybe<Scalars['Boolean']>;
+  pngCompressionLevel?: Maybe<Scalars['Int']>;
+  pngCompressionSpeed?: Maybe<Scalars['Int']>;
+  grayscale?: Maybe<Scalars['Boolean']>;
   duotone?: Maybe<DuotoneGradient>;
-  base64: Scalars['Boolean'];
+  base64?: Maybe<Scalars['Boolean']>;
   traceSVG?: Maybe<Potrace>;
-  toFormat: ImageFormat;
-  cropFocus: ImageCropFocus;
-  fit: ImageFit;
-  background: Scalars['String'];
-  rotate: Scalars['Int'];
-  trim: Scalars['Float'];
+  toFormat?: Maybe<ImageFormat>;
+  cropFocus?: Maybe<ImageCropFocus>;
+  fit?: Maybe<ImageFit>;
+  background?: Maybe<Scalars['String']>;
+  rotate?: Maybe<Scalars['Int']>;
+  trim?: Maybe<Scalars['Float']>;
 };
 
 export type ImageSharpConnection = {
@@ -1179,7 +1179,6 @@ export type IntQueryOperatorInput = {
 
 /** Node Interface */
 export type Node = {
-  __typename?: 'Node';
   id: Scalars['ID'];
   parent?: Maybe<Node>;
   children: Array<Node>;
@@ -1374,7 +1373,6 @@ export type QuerySitePageArgs = {
   children?: Maybe<NodeFilterListInput>;
   internal?: Maybe<InternalFilterInput>;
   path?: Maybe<StringQueryOperatorInput>;
-  jsonName?: Maybe<StringQueryOperatorInput>;
   internalComponentName?: Maybe<StringQueryOperatorInput>;
   component?: Maybe<StringQueryOperatorInput>;
   componentChunkName?: Maybe<StringQueryOperatorInput>;
@@ -1656,7 +1654,6 @@ export type SitePage = Node & {
   children: Array<Node>;
   internal: Internal;
   path?: Maybe<Scalars['String']>;
-  jsonName?: Maybe<Scalars['String']>;
   internalComponentName?: Maybe<Scalars['String']>;
   component?: Maybe<Scalars['String']>;
   componentChunkName?: Maybe<Scalars['String']>;
@@ -1781,7 +1778,6 @@ export enum SitePageFieldsEnum {
   InternalOwner = 'internal___owner',
   InternalType = 'internal___type',
   Path = 'path',
-  JsonName = 'jsonName',
   InternalComponentName = 'internalComponentName',
   Component = 'component',
   ComponentChunkName = 'componentChunkName',
@@ -1865,7 +1861,6 @@ export type SitePageFilterInput = {
   children?: Maybe<NodeFilterListInput>;
   internal?: Maybe<InternalFilterInput>;
   path?: Maybe<StringQueryOperatorInput>;
-  jsonName?: Maybe<StringQueryOperatorInput>;
   internalComponentName?: Maybe<StringQueryOperatorInput>;
   component?: Maybe<StringQueryOperatorInput>;
   componentChunkName?: Maybe<StringQueryOperatorInput>;

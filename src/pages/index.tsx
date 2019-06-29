@@ -1,40 +1,46 @@
 import { graphql } from 'gatsby';
 import produce from 'immer';
 import { DateTime } from 'luxon';
-import React, { useMemo, useReducer } from 'react';
-import DoughForm, { MAX_HOURS } from '../components/DoughForm';
+import React, { Reducer, useMemo, useReducer } from 'react';
+import DoughForm, { MAX_HOURS, MIN_HOURS } from '../components/DoughForm';
 import DoughRecipe from '../components/DoughRecipe';
 import Layout from '../components/Layout';
 import { IndexPageQuery } from '../generatedGraphQL';
-import { DoughInput, TemperatureUnit, YeastModel, initialDoughInput } from '../recipe';
+import { DoughInput, initialFormState, parseDoughFormState, TemperatureUnit, YeastModel } from '../recipe';
 
 export interface Props {
   data: IndexPageQuery;
 }
 
+type DeepNumberToString<T> = {
+  [K in keyof T]: T[K] extends number ? string : DeepNumberToString<T[K]>;
+};
+
+export type DoughFormState = DeepNumberToString<DoughInput>;
+
 export type DoughAction =
   | {
       type: 'COUNT';
       payload: {
-        count: number;
+        count: string;
       };
     }
   | {
       type: 'WEIGHT';
       payload: {
-        weight: number;
+        weight: string;
       };
     }
   | {
       type: 'HYDRATION';
       payload: {
-        hydration: number;
+        hydration: string;
       };
     }
   | {
       type: 'SALT_PERCENTAGE';
       payload: {
-        percentage: number;
+        percentage: string;
       };
     }
   | {
@@ -46,7 +52,7 @@ export type DoughAction =
   | {
       type: 'TEMPERATURE_VALUE';
       payload: {
-        temperature: number;
+        temperature: string;
       };
     }
   | {
@@ -58,7 +64,7 @@ export type DoughAction =
   | {
       type: 'HOURS';
       payload: {
-        hours: number;
+        hours: string;
       };
     }
   | {
@@ -110,8 +116,8 @@ function convertTemperature(newUnit: TemperatureUnit, value: number): number {
   }
 }
 
-function reducer(state: DoughInput, action: DoughAction): DoughInput {
-  return produce(state, draft => {
+const reducer: Reducer<DoughFormState, DoughAction> = (state, action) =>
+  produce(state, draft => {
     switch (action.type) {
       case 'COUNT': {
         draft.count = action.payload.count;
@@ -132,7 +138,7 @@ function reducer(state: DoughInput, action: DoughAction): DoughInput {
       case 'TEMPERATURE_UNIT': {
         const { unit } = action.payload;
         draft.temperature.unit = unit;
-        draft.temperature.value = convertTemperature(unit, state.temperature.value);
+        draft.temperature.value = convertTemperature(unit, +state.temperature.value).toString();
         return;
       }
       case 'TEMPERATURE_VALUE': {
@@ -142,14 +148,15 @@ function reducer(state: DoughInput, action: DoughAction): DoughInput {
       case 'DATE_TIME': {
         const { isoDate } = action.payload;
         if (isoDate) {
-          const pizzaTime = DateTime.fromISO(isoDate);
-          const now = DateTime.local();
-          const hours = pizzaTime.diff(now, 'hours').as('hours');
-          if (hours >= 2 && hours <= MAX_HOURS) {
-            draft.hours = Math.round(hours);
+          const pizzaTime = DateTime.fromISO(isoDate).set({ minute: 0 });
+          const now = DateTime.local().set({ minute: 0 });
+          const hours = Math.round(pizzaTime.diff(now, 'hours').as('hours'));
+          if (hours >= MIN_HOURS && hours <= MAX_HOURS) {
+            draft.hours = hours.toString();
+          } else {
           }
         } else {
-          draft.hours = initialDoughInput.hours;
+          draft.hours = initialFormState.hours;
         }
 
         return;
@@ -159,27 +166,28 @@ function reducer(state: DoughInput, action: DoughAction): DoughInput {
         return;
       }
       case 'RESET':
-        return initialDoughInput;
+        return initialFormState;
       default:
         return;
     }
   });
-}
 
 const IndexPage: React.FC<Props> = ({ data }) => {
-  const [doughInputs, dispatch] = useReducer(reducer, initialDoughInput);
-  const { unit } = doughInputs.temperature;
+  const [doughFormState, dispatch] = useReducer(reducer, initialFormState);
+  const { unit } = doughFormState.temperature;
   const yeastModels = useMemo(() => prepareYeastModels(data, unit), [data, unit]);
 
   return (
     <Layout title="Home">
       <section className="section">
         <div className="container">
-          <h1 className="title is-1 has-text-centered">Neapolitan Pizza Dough</h1>
-          <h3 className="subtitle is-3 has-text-centered">Get your recipe!</h3>
+          <header>
+            <h1 className="title is-1 has-text-centered">Neapolitan Pizza Dough</h1>
+            <h3 className="subtitle is-3 has-text-centered">Get your recipe!</h3>
+          </header>
           <div className="vertically-spaced">
-            <DoughForm doughInputs={doughInputs} dispatch={dispatch} />
-            <DoughRecipe doughInputs={doughInputs} yeastModels={yeastModels} />
+            <DoughForm formState={doughFormState} dispatch={dispatch} />
+            <DoughRecipe doughInputs={parseDoughFormState(doughFormState)} yeastModels={yeastModels} />
           </div>
         </div>
       </section>

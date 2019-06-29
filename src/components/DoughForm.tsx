@@ -1,14 +1,15 @@
 import { DateTime, Duration } from 'luxon';
 import React from 'react';
-import { DoughAction } from '../pages';
-import { DoughInput, TemperatureUnit } from '../recipe';
+import { DoughAction, DoughFormState } from '../pages';
+import { TemperatureUnit } from '../recipe';
 import { FormField, HorizontalField } from './bulma/Forms';
 
 export interface Props {
-  doughInputs: DoughInput;
+  formState: DoughFormState;
   dispatch: (action: DoughAction) => void;
 }
 
+export const MIN_HOURS = 2;
 export const MAX_HOURS = 167;
 
 function getDateTimeValue(hours: number): string {
@@ -27,8 +28,8 @@ function getMaxTemp(unit: TemperatureUnit): number {
   }
 }
 
-const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
-  const { count, weight, hydration, saltPercentage, temperature, hours } = doughInputs;
+const DoughForm: React.FC<Props> = ({ formState, dispatch }) => {
+  const { count, weight, hydration, saltPercentage, temperature, hours } = formState;
   return (
     <form>
       <HorizontalField>
@@ -64,7 +65,7 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
                 dispatch({
                   type: 'COUNT',
                   payload: {
-                    count: +e.currentTarget.value,
+                    count: e.currentTarget.value,
                   },
                 });
               }}
@@ -74,7 +75,7 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
       </HorizontalField>
       <HorizontalField label={<label className="label">Weight per ball [g]</label>}>
         <FormField
-          help="For a classic neapolitan pizza, around 270g is suggested."
+          help="For a classic neapolitan pizza, around 250g to 270g is suggested."
           control={
             <input
               className="input"
@@ -87,7 +88,7 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
                 dispatch({
                   type: 'WEIGHT',
                   payload: {
-                    weight: +e.currentTarget.value,
+                    weight: e.currentTarget.value,
                   },
                 });
               }}
@@ -111,7 +112,7 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
                 dispatch({
                   type: 'HYDRATION',
                   payload: {
-                    hydration: +e.currentTarget.value,
+                    hydration: e.currentTarget.value,
                   },
                 });
               }}
@@ -136,7 +137,7 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
                 dispatch({
                   type: 'SALT_PERCENTAGE',
                   payload: {
-                    percentage: +e.currentTarget.value,
+                    percentage: e.currentTarget.value,
                   },
                 });
               }}
@@ -202,7 +203,7 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
                 dispatch({
                   type: 'TEMPERATURE_VALUE',
                   payload: {
-                    temperature: +e.currentTarget.value,
+                    temperature: e.currentTarget.value,
                   },
                 });
               }}
@@ -212,15 +213,15 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
       </HorizontalField>
       <HorizontalField label={<label className="label">Timing</label>}>
         <FormField
-          help="When do you want to make your pizza?"
+          help="When do you want to eat your pizza?"
           control={
             <input
               className="input"
               type="datetime-local"
               name="pizza-time"
               aria-label="Pizza Time"
-              min="2017-06-01T08:30"
-              value={getDateTimeValue(hours)}
+              min={getDateTimeValue(MIN_HOURS)}
+              value={getDateTimeValue(+hours)}
               onChange={e => {
                 dispatch({
                   type: 'DATE_TIME',
@@ -249,7 +250,7 @@ const DoughForm: React.FC<Props> = ({ doughInputs, dispatch }) => {
                 dispatch({
                   type: 'HOURS',
                   payload: {
-                    hours: +e.currentTarget.value,
+                    hours: e.currentTarget.value,
                   },
                 });
               }}

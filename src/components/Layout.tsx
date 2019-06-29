@@ -15,15 +15,28 @@ const Layout: React.FC<Props> = ({ title, children }) => (
     <main>{children}</main>
     <footer className="footer">
       <div className="container content has-text-centered">
-        <p>
+        <div>
           {'Created by '}
-          <a href="https://github.com/fnberta">Fabio Berta</a>
+          <a href="https://github.com/fnberta" target="_blank" rel="noopener noreferrer">
+            Fabio Berta
+          </a>
           {'. The source code is licensed '}
-          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>
+          <a href="http://opensource.org/licenses/mit-license.php" target="_blank" rel="noopener noreferrer">
+            MIT
+          </a>
           {'. Find it on '}
-          <a href="https://github.com/fnberta/np-dough">Github</a>
+          <a href="https://github.com/fnberta/np-dough" target="_blank" rel="noopener noreferrer">
+            Github
+          </a>
           {'.'}
-        </p>
+        </div>
+        <div>
+          {'The yeast quantities are based on a model created by '}
+          <a href="https://www.pizzamaking.com/forum/index.php?topic=26831.0" target="_blank" rel="noopener noreferrer">
+            TXCraig1
+          </a>
+          {'.'}
+        </div>
       </div>
     </footer>
   </>
