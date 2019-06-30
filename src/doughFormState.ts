@@ -84,25 +84,25 @@ export const reducer: Reducer<DoughFormState, DoughAction> = (state, action) =>
       case 'COUNT': {
         const { count } = action;
         draft.values.count = count;
-        draft.errors['count'] = +count <= 0;
+        draft.errors.count = +count <= 0;
         return;
       }
       case 'WEIGHT': {
         const { weight } = action;
         draft.values.weight = weight;
-        draft.errors['weight'] = +weight <= 0;
+        draft.errors.weight = +weight <= 0;
         return;
       }
       case 'HYDRATION': {
         const { hydration } = action;
         draft.values.hydration = hydration;
-        draft.errors['hydration'] = !isInRange([1, 100], +hydration);
+        draft.errors.hydration = !isInRange([1, 100], +hydration);
         return;
       }
       case 'SALT_PERCENTAGE': {
         const { percentage } = action;
         draft.values.saltPercentage = percentage;
-        draft.errors['saltPercentage'] = !isInRange([1, 100], +percentage);
+        draft.errors.saltPercentage = !isInRange([1, 100], +percentage);
         return;
       }
       case 'TEMPERATURE_UNIT': {
@@ -110,13 +110,13 @@ export const reducer: Reducer<DoughFormState, DoughAction> = (state, action) =>
         draft.values.temperature.unit = unit;
         const temperature = convertTemperature(unit, +state.values.temperature.value);
         draft.values.temperature.value = temperature.toString();
-        draft.errors['temperature'] = !isInRange(getTempRange(unit), +temperature);
+        draft.errors.temperature = !isInRange(getTempRange(unit), +temperature);
         return;
       }
       case 'TEMPERATURE_VALUE': {
         const { temperature } = action;
         draft.values.temperature.value = temperature;
-        draft.errors['temperature'] = !isInRange(getTempRange(state.values.temperature.unit), +temperature);
+        draft.errors.temperature = !isInRange(getTempRange(state.values.temperature.unit), +temperature);
         return;
       }
       case 'DATE_TIME': {
@@ -126,7 +126,7 @@ export const reducer: Reducer<DoughFormState, DoughAction> = (state, action) =>
           const now = DateTime.local().set({ minute: 0 });
           const hours = Math.round(pizzaTime.diff(now, 'hours').as('hours'));
           draft.values.hours = hours.toString();
-          draft.errors['hours'] = !isInRange([MIN_HOURS, MAX_HOURS], hours);
+          draft.errors.hours = !isInRange([MIN_HOURS, MAX_HOURS], hours);
         } else {
           draft.values.hours = initialState.values.hours;
         }
@@ -136,7 +136,7 @@ export const reducer: Reducer<DoughFormState, DoughAction> = (state, action) =>
       case 'HOURS': {
         const { hours } = action;
         draft.values.hours = hours;
-        draft.errors['hours'] = !isInRange([MIN_HOURS, MAX_HOURS], +hours);
+        draft.errors.hours = !isInRange([MIN_HOURS, MAX_HOURS], +hours);
         return;
       }
       default:

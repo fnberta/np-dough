@@ -36,10 +36,10 @@ const DoughForm: React.FC<Props> = ({ formState, dispatch }) => {
       <HorizontalField label={<label className="label">Number of dough balls</label>}>
         <FormField
           help="How hungry are you?"
-          error={errors['count'] && 'This will never be enough to satisfy your appetite…'}
+          error={errors.count && 'This will never be enough to satisfy your appetite…'}
           control={
             <input
-              className={cx('input', errors['count'] && 'is-danger')}
+              className={cx('input', errors.count && 'is-danger')}
               type="number"
               name="count"
               aria-label="Count"
@@ -53,10 +53,10 @@ const DoughForm: React.FC<Props> = ({ formState, dispatch }) => {
       <HorizontalField label={<label className="label">Weight per ball [g]</label>}>
         <FormField
           help="For a classic neapolitan pizza, around 250g to 270g is suggested."
-          error={errors['weight'] && 'This will never be enough to satisfy your appetite…'}
+          error={errors.weight && 'This will never be enough to satisfy your appetite…'}
           control={
             <input
-              className={cx('input', errors['weight'] && 'is-danger')}
+              className={cx('input', errors.weight && 'is-danger')}
               type="number"
               name="weight"
               aria-label="Weight"
@@ -70,10 +70,10 @@ const DoughForm: React.FC<Props> = ({ formState, dispatch }) => {
       <HorizontalField label={<label className="label">Hydration [%]</label>}>
         <FormField
           help="If you have typo 00 flour, start with 65% and experiment with higher values."
-          error={errors['hydration'] && 'Please enter a value between 1 and 100.'}
+          error={errors.hydration && 'Please enter a value between 1 and 100.'}
           control={
             <input
-              className={cx('input', errors['hydration'] && 'is-danger')}
+              className={cx('input', errors.hydration && 'is-danger')}
               type="number"
               name="hydration"
               aria-label="Hydration"
@@ -88,10 +88,10 @@ const DoughForm: React.FC<Props> = ({ formState, dispatch }) => {
       <HorizontalField label={<label className="label">Salt [%]</label>}>
         <FormField
           help="A value between 3% and 4% is a good start."
-          error={errors['saltPercentage'] && 'Please enter a value between 1 and 100.'}
+          error={errors.saltPercentage && 'Please enter a value between 1 and 100.'}
           control={
             <input
-              className={cx('input', errors['saltPercentage'] && 'is-danger')}
+              className={cx('input', errors.saltPercentage && 'is-danger')}
               type="number"
               name="salt"
               aria-label="Salt"
@@ -135,10 +135,10 @@ const DoughForm: React.FC<Props> = ({ formState, dispatch }) => {
       <HorizontalField>
         <FormField
           help="Fermenting at room temperature is suggested."
-          error={errors['temperature'] && `Please enter a value between ${tempRange[0]} and ${tempRange[1]}.`}
+          error={errors.temperature && `Please enter a value between ${tempRange[0]} and ${tempRange[1]}.`}
           control={
             <input
-              className={cx('input', errors['temperature'] && 'is-danger')}
+              className={cx('input', errors.temperature && 'is-danger')}
               type="number"
               name="temperature"
               aria-label="Temperature"
@@ -153,10 +153,10 @@ const DoughForm: React.FC<Props> = ({ formState, dispatch }) => {
       <HorizontalField label={<label className="label">Timing</label>}>
         <FormField
           help="When do you want to eat your pizza?"
-          error={errors['hours'] && 'Please specify a valid date in the future.'}
+          error={errors.hours && 'Please specify a valid date in the future.'}
           control={
             <input
-              className={cx('input', errors['hours'] && 'is-danger')}
+              className={cx('input', errors.hours && 'is-danger')}
               type="datetime-local"
               name="pizza-time"
               aria-label="Pizza Time"
@@ -170,10 +170,10 @@ const DoughForm: React.FC<Props> = ({ formState, dispatch }) => {
       <HorizontalField>
         <FormField
           help="Number of hours your dough should rise before usage."
-          error={errors['hours'] && `Please specify a number between ${MIN_HOURS} and ${MAX_HOURS}.`}
+          error={errors.hours && `Please specify a number between ${MIN_HOURS} and ${MAX_HOURS}.`}
           control={
             <input
-              className={cx('input', errors['hours'] && 'is-danger')}
+              className={cx('input', errors.hours && 'is-danger')}
               type="number"
               name="time"
               aria-label="Time to rise"
