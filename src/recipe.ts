@@ -1,5 +1,3 @@
-import { DoughFormState } from './pages';
-
 export interface YeastValues {
   idy: number;
   cy: number;
@@ -14,7 +12,8 @@ export interface YeastModel {
 
 export type TemperatureUnit = 'celsius' | 'fahrenheit';
 
-export interface DoughInput {
+export interface ValidDoughInputs {
+  valid: true;
   count: number;
   weight: number;
   hydration: number;
@@ -26,44 +25,13 @@ export interface DoughInput {
   hours: number;
 }
 
+export type DoughInputs = ValidDoughInputs | { valid: false };
+
 export interface DoughRecipe {
   flour: number;
   water: number;
   salt: number;
   yeast: YeastValues;
-}
-
-export const initialFormState: DoughFormState = {
-  count: '4',
-  weight: '270',
-  hydration: '65',
-  saltPercentage: '3.2',
-  temperature: {
-    unit: 'celsius',
-    value: '20',
-  },
-  hours: '24',
-};
-
-export function parseDoughFormState({
-  count,
-  weight,
-  hydration,
-  saltPercentage,
-  temperature,
-  hours,
-}: DoughFormState): DoughInput {
-  return {
-    count: +count,
-    weight: +weight,
-    hydration: +hydration,
-    saltPercentage: +saltPercentage,
-    temperature: {
-      unit: temperature.unit,
-      value: +temperature.value,
-    },
-    hours: +hours,
-  };
 }
 
 function getYeastValues(yeastModels: Map<number, YeastModel[]>, temperature: number, hours: number): YeastValues {
@@ -110,7 +78,7 @@ function getYeastValues(yeastModels: Map<number, YeastModel[]>, temperature: num
 
 export function getDoughRecipe(
   yeastModels: Map<number, YeastModel[]>,
-  { count, weight, hydration, saltPercentage, temperature, hours }: DoughInput,
+  { count, weight, hydration, saltPercentage, temperature, hours }: ValidDoughInputs,
 ): DoughRecipe {
   const totalWeight = count * weight;
   const flour = totalWeight / (1 + hydration / 100 + saltPercentage / 100);

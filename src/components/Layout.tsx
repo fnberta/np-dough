@@ -1,5 +1,6 @@
 import React from 'react';
 import './layout.scss';
+import '@fortawesome/fontawesome-free/js/all.min.js';
 import SEO from './SEO';
 
 export interface Props {

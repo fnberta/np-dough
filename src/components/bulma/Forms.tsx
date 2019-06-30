@@ -8,7 +8,7 @@ export interface FormFieldProps extends ClassNameProps {
   control: React.ReactNode;
   icon?: string;
   help?: string;
-  error?: string;
+  error?: string | false;
 }
 
 export const FormField: React.FC<FormFieldProps> = ({ label, control, icon, help, error, className }) => (
@@ -24,7 +24,8 @@ export const FormField: React.FC<FormFieldProps> = ({ label, control, icon, help
       {icon && <Icon className="is-left" icon={icon} />}
       {error && <Icon className="is-small is-right" icon="fa-exclamation-triangle" />}
     </div>
-    {help && <p className="help">{help}</p>}
+    {error && <p className="help is-danger">{error}</p>}
+    {!error && help && <p className="help">{help}</p>}
   </div>
 );
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { DoughInput, getDoughRecipe, YeastModel } from '../recipe';
+import { getDoughRecipe, ValidDoughInputs, YeastModel } from '../recipe';
 
 export interface Props {
-  doughInputs: DoughInput;
+  doughInputs: ValidDoughInputs;
   // yeast models keyed by temperature
   yeastModels: Map<number, YeastModel[]>;
 }

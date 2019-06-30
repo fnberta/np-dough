@@ -1,4 +1,17 @@
-import { DoughInput, getDoughRecipe, parseDoughFormState, initialFormState } from './recipe';
+import { DoughInputs, getDoughRecipe, ValidDoughInputs } from './recipe';
+
+const testInputs: ValidDoughInputs = {
+  valid: true,
+  count: 4,
+  weight: 270,
+  hydration: 65,
+  saltPercentage: 3.2,
+  temperature: {
+    unit: 'celsius',
+    value: 23,
+  },
+  hours: 24,
+};
 
 test('should return exact cy amount if value available', () => {
   const yeastModels = new Map([
@@ -17,8 +30,8 @@ test('should return exact cy amount if value available', () => {
       ],
     ],
   ]);
-  const input: DoughInput = {
-    ...parseDoughFormState(initialFormState),
+  const input: DoughInputs = {
+    ...testInputs,
     temperature: {
       unit: 'celsius',
       value: 20,
@@ -75,8 +88,8 @@ describe('should return interpolated cy amount if no value available', () => {
         ],
       ],
     ]);
-    const input: DoughInput = {
-      ...parseDoughFormState(initialFormState),
+    const input: DoughInputs = {
+      ...testInputs,
       temperature: {
         unit: 'celsius',
         value: 20,
@@ -132,8 +145,8 @@ describe('should return interpolated cy amount if no value available', () => {
         ],
       ],
     ]);
-    const input: DoughInput = {
-      ...parseDoughFormState(initialFormState),
+    const input: DoughInputs = {
+      ...testInputs,
       temperature: {
         unit: 'celsius',
         value: 20,
